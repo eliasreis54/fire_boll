@@ -22,12 +22,11 @@ class FireBollGame extends Game {
   List<GameObject> enemies = [];
 
   FireBollGame({this.screenSize, @required this.onLostGame}) {
-    player = GameObject()
-        ..position = Rect.fromLTWH(100, 100, 70, 70);
+    player = GameObject()..position = Rect.fromLTWH(100, 100, 70, 70);
     enemyCreator = Timer(enemyTimer, repeat: true, callback: () {
       enemies.add(GameObject()
-          ..position = Rect.fromLTWH((screenSize.width - 50) * random.nextDouble(), 0, 50, 50)
-      );
+        ..position = Rect.fromLTWH(
+            (screenSize.width - 50) * random.nextDouble(), 0, 50, 50));
     });
     enemyCreator.start();
   }
