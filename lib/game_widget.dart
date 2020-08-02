@@ -16,7 +16,7 @@ class _GameWidget extends State<GameWidget> {
 
   void toggleLostGame() {
     setState(() {
-      _lostGame = !this._lostGame; 
+      _lostGame = !this._lostGame;
     });
   }
 
