@@ -16,6 +16,9 @@ class RestartGame extends StatelessWidget {
             Text(
               'Perdeu o jogo',
               textDirection: TextDirection.rtl,
+              style: TextStyle(
+                  color: Colors.white,
+              ),
             ),
             RaisedButton(
               onPressed: this.onPressRestart,

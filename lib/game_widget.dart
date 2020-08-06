@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import './fire_boll_game.dart';
-import './restart_game.dart';
 import './select_difficulty.dart';
 
 class GameWidget extends StatefulWidget {
@@ -13,18 +12,11 @@ class GameWidget extends StatefulWidget {
 }
 
 class _GameWidget extends State<GameWidget> {
-  bool _lostGame = false;
   FireBollGame _game;
   double _difficult = 0;
 
-  void toggleLostGame() {
-    setState(() {
-      _lostGame = !this._lostGame;
-    });
-  }
-
   void createGame() {
-     _game = FireBollGame(screenSize: widget.size, onLostGame: this.toggleLostGame, enemySpeed: this._difficult);
+     _game = FireBollGame(screenSize: widget.size, enemySpeed: this._difficult);
      setState(() {});
   }
 
@@ -45,14 +37,12 @@ class _GameWidget extends State<GameWidget> {
     });
     createGame();
   }
+
   @override
   Widget build(BuildContext context) {
-    if (_lostGame) {
-      return RestartGame(this.toggleLostGame);
-    }
-
     return MaterialApp(
         home:Scaffold(
+            backgroundColor: Colors.black,
             body: _game == null ? SelectDifficulty(this.setDifficult) : setBody(),
         ),
     );

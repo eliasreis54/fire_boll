@@ -10,11 +10,11 @@ class FireBollGame extends Game with HasWidgetsOverlay {
   final Paint playerColor = Paint()..color = Color(0xFFFFFFFFF);
   final Paint enemyColor = Paint()..color = Color(0xFFF005577);
   final Size screenSize;
-  final Function onLostGame;
   int points = 0;
   double enemySpeed = 50;
   double enemyTimer = 2.0;
   bool startGame = true;
+  bool lostGame = false;
 
   Random random = Random();
   Timer enemyCreator;
@@ -23,7 +23,7 @@ class FireBollGame extends Game with HasWidgetsOverlay {
 
   List<GameObject> enemies = [];
 
-  FireBollGame({this.screenSize, @required this.onLostGame, @required this.enemySpeed}) {
+  FireBollGame({this.screenSize, @required this.enemySpeed}) {
     player = GameObject()..position = Rect.fromLTWH(100, 100, 70, 70);
     enemyCreator = Timer(enemyTimer, repeat: true, callback: () {
       enemies.add(GameObject()
@@ -37,6 +37,12 @@ class FireBollGame extends Game with HasWidgetsOverlay {
     player.position = player.position.translate(delta.dx, delta.dy);
   }
 
+  void restartGame() {
+    points = 0;
+    enemyCreator.start();
+    lostGame = false;
+  }
+
   @override
   void update(double dt) {
     enemyCreator.update(dt);
@@ -47,7 +53,7 @@ class FireBollGame extends Game with HasWidgetsOverlay {
       final inLeft = enemy.position.left >= player.position.left;
       final inRigth = enemy.position.right <= player.position.right;
       if (inTop && inBottom && inLeft && inRigth) {
-        this.points = this.points + 1;
+        points = points + 1;
         enemy.inPlayer = true;
         enemySpeed = enemySpeed + 10;
       }
@@ -56,7 +62,7 @@ class FireBollGame extends Game with HasWidgetsOverlay {
     enemies.removeWhere((enemy) {
       bool leaveScreen = enemy.position.top >= screenSize.height;
       if (leaveScreen) {
-        this.onLostGame();
+        lostGame = true;
       }
       return leaveScreen || enemy.inPlayer;
     });
@@ -64,11 +70,23 @@ class FireBollGame extends Game with HasWidgetsOverlay {
 
   @override
   void render(Canvas canvas) {
-    player.render(canvas, playerColor);
+    if (lostGame) {
+      enemyCreator.stop();
+      enemies.removeWhere((enemy) => !enemy.inPlayer);
+      addWidgetOverlay(
+          'lostGame',
+          Center(
+              child: RestartGame(restartGame),
+          ),
+      );
+    } else {
+      removeWidgetOverlay('lostGame');
+      player.render(canvas, playerColor);
 
-    enemies.forEach((enemy) {
-      enemy.render(canvas, enemyColor);
-    });
-    PointsRender().render(canvas, this.points, this.screenSize);
+      enemies.forEach((enemy) {
+        enemy.render(canvas, enemyColor);
+      });
+    }
+    PointsRender().render(canvas, points, screenSize);
   }
 }
