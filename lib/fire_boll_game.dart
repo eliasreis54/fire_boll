@@ -24,7 +24,7 @@ class FireBollGame extends Game with HasWidgetsOverlay {
   List<GameObject> enemies = [];
 
   FireBollGame({this.screenSize, @required this.enemySpeed}) {
-    player = GameObject()..position = Rect.fromLTWH(100, 100, 70, 70);
+    player = GameObject()..position = Rect.fromLTWH(200, 500, 70, 70);
     enemyCreator = Timer(enemyTimer, repeat: true, callback: () {
       enemies.add(GameObject()
         ..position = Rect.fromLTWH(
@@ -41,6 +41,7 @@ class FireBollGame extends Game with HasWidgetsOverlay {
     points = 0;
     enemyCreator.start();
     lostGame = false;
+    player.position = Rect.fromLTWH(200, 500, 70, 70);
   }
 
   @override
