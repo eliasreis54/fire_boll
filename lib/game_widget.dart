@@ -16,22 +16,24 @@ class _GameWidget extends State<GameWidget> {
 
   void toggleLostGame() {
     setState(() {
-      _lostGame = !this._lostGame; 
+      _lostGame = !this._lostGame;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final game = FireBollGame(screenSize: widget.size, onLostGame: this.toggleLostGame);
+    final game =
+        FireBollGame(screenSize: widget.size, onLostGame: this.toggleLostGame);
     if (_lostGame) {
       return RestartGame(this.toggleLostGame);
     }
 
     return GestureDetector(
-      onPanUpdate: (DragUpdateDetails details) => game.onPlayerMove(details.delta),
+      onPanUpdate: (DragUpdateDetails details) =>
+          game.onPlayerMove(details.delta),
       child: Container(
-          color: Color(0XFF000000),
-          child: game.widget,
+        color: Color(0XFF000000),
+        child: game.widget,
       ),
     );
   }
