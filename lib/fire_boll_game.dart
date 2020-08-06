@@ -4,8 +4,9 @@ import 'package:flame/time.dart';
 import './game_object.dart';
 import './points.dart';
 import 'dart:math';
+import './restart_game.dart';
 
-class FireBollGame extends Game {
+class FireBollGame extends Game with HasWidgetsOverlay {
   final Paint playerColor = Paint()..color = Color(0xFFFFFFFFF);
   final Paint enemyColor = Paint()..color = Color(0xFFF005577);
   final Size screenSize;
@@ -13,6 +14,7 @@ class FireBollGame extends Game {
   int points = 0;
   double enemySpeed = 50;
   double enemyTimer = 2.0;
+  bool startGame = true;
 
   Random random = Random();
   Timer enemyCreator;
@@ -21,7 +23,7 @@ class FireBollGame extends Game {
 
   List<GameObject> enemies = [];
 
-  FireBollGame({this.screenSize, @required this.onLostGame}) {
+  FireBollGame({this.screenSize, @required this.onLostGame, @required this.enemySpeed}) {
     player = GameObject()..position = Rect.fromLTWH(100, 100, 70, 70);
     enemyCreator = Timer(enemyTimer, repeat: true, callback: () {
       enemies.add(GameObject()
