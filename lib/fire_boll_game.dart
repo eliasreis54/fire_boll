@@ -74,10 +74,10 @@ class FireBollGame extends Game with HasWidgetsOverlay {
       enemyCreator.stop();
       enemies.removeWhere((enemy) => !enemy.inPlayer);
       addWidgetOverlay(
-          'lostGame',
-          Center(
-              child: RestartGame(restartGame),
-          ),
+        'lostGame',
+        Center(
+          child: RestartGame(restartGame),
+        ),
       );
     } else {
       removeWidgetOverlay('lostGame');

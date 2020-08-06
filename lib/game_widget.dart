@@ -11,16 +11,13 @@ class GameWidget extends StatefulWidget {
   _GameWidget createState() => _GameWidget();
 }
 
-class _GameWidget extends State<GameWidget> {
+class Body extends StatelessWidget {
   FireBollGame _game;
-  double _difficult = 0;
 
-  void createGame() {
-     _game = FireBollGame(screenSize: widget.size, enemySpeed: this._difficult);
-     setState(() {});
-  }
+  Body(this._game);
 
-  Widget setBody() {
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onPanUpdate: (DragUpdateDetails details) =>
           _game.onPlayerMove(details.delta),
@@ -30,10 +27,20 @@ class _GameWidget extends State<GameWidget> {
       ),
     );
   }
+}
+
+class _GameWidget extends State<GameWidget> {
+  FireBollGame _game;
+  double _difficulty = 0;
+
+  void createGame() {
+    _game = FireBollGame(screenSize: widget.size, enemySpeed: this._difficulty);
+    setState(() {});
+  }
 
   void setDifficult(double value) {
     setState(() {
-      _difficult = value;
+      _difficulty = value;
     });
     createGame();
   }
@@ -41,10 +48,10 @@ class _GameWidget extends State<GameWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home:Scaffold(
-            backgroundColor: Colors.black,
-            body: _game == null ? SelectDifficulty(this.setDifficult) : setBody(),
-        ),
+      home: Scaffold(
+        backgroundColor: Colors.black,
+        body: _game == null ? SelectDifficulty(this.setDifficult) : Body(_game),
+      ),
     );
   }
 }

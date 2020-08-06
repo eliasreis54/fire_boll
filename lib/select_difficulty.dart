@@ -5,7 +5,6 @@ class SelectDifficulty extends StatelessWidget {
 
   SelectDifficulty(this.onSelect);
 
-
   @override
   Widget build(BuildContext context) {
     return Directionality(
