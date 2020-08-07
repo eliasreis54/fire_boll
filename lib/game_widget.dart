@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './fire_boll_game.dart';
-import './restart_game.dart';
+import './select_difficulty.dart';
 
 class GameWidget extends StatefulWidget {
   final Size size;
@@ -11,29 +11,45 @@ class GameWidget extends StatefulWidget {
   _GameWidget createState() => _GameWidget();
 }
 
-class _GameWidget extends State<GameWidget> {
-  bool _lostGame = false;
+class Body extends StatelessWidget {
+  FireBollGame _game;
 
-  void toggleLostGame() {
+  Body(this._game);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onPanUpdate: (DragUpdateDetails details) =>
+          _game.onPlayerMove(details.delta),
+      child: Container(
+        color: Color(0XFF000000),
+        child: _game.widget,
+      ),
+    );
+  }
+}
+
+class _GameWidget extends State<GameWidget> {
+  FireBollGame _game;
+  double _difficulty = 0;
+
+  void createGame() {
+    _game = FireBollGame(screenSize: widget.size, enemySpeed: this._difficulty);
+  }
+
+  void setDifficult(double value) {
     setState(() {
-      _lostGame = !this._lostGame;
+      _difficulty = value;
     });
+    createGame();
   }
 
   @override
   Widget build(BuildContext context) {
-    final game =
-        FireBollGame(screenSize: widget.size, onLostGame: this.toggleLostGame);
-    if (_lostGame) {
-      return RestartGame(this.toggleLostGame);
-    }
-
-    return GestureDetector(
-      onPanUpdate: (DragUpdateDetails details) =>
-          game.onPlayerMove(details.delta),
-      child: Container(
-        color: Color(0XFF000000),
-        child: game.widget,
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.black,
+        body: _game == null ? SelectDifficulty(this.setDifficult) : Body(_game),
       ),
     );
   }
