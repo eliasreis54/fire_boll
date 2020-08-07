@@ -35,7 +35,6 @@ class _GameWidget extends State<GameWidget> {
 
   void createGame() {
     _game = FireBollGame(screenSize: widget.size, enemySpeed: this._difficulty);
-    setState(() {});
   }
 
   void setDifficult(double value) {
