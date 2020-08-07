@@ -12,6 +12,7 @@ class SelectDifficulty extends StatelessWidget {
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          // TODO: refactor to use a list
           children: [
             Text(
               'Nível de dificuldade',
