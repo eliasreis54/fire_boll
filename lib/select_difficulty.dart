@@ -18,31 +18,31 @@ class SelectDifficulty extends StatelessWidget {
               textDirection: TextDirection.rtl,
             ),
             RaisedButton(
-              onPressed: () => this.onSelect(50.0),
+              onPressed: () => this.onSelect(100.0),
               child: Text(
                 'fácil',
               ),
             ),
             RaisedButton(
-              onPressed: () => this.onSelect(100.0),
+              onPressed: () => this.onSelect(200.0),
               child: Text(
                 'médio',
               ),
             ),
             RaisedButton(
-              onPressed: () => this.onSelect(150.0),
+              onPressed: () => this.onSelect(300.0),
               child: Text(
                 'difícil',
               ),
             ),
             RaisedButton(
-              onPressed: () => this.onSelect(200.0),
+              onPressed: () => this.onSelect(600.0),
               child: Text(
                 'insano',
               ),
             ),
             RaisedButton(
-              onPressed: () => this.onSelect(250.0),
+              onPressed: () => this.onSelect(800.0),
               child: Text(
                 '2020',
               ),
