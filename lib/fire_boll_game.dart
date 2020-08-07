@@ -46,31 +46,6 @@ class FireBollGame extends Game with HasWidgetsOverlay {
 
   @override
   void update(double dt) {
-    enemyCreator.update(dt);
-    enemies.forEach((enemy) {
-      enemy.position = enemy.position.translate(0, (enemySpeed * dt));
-      final inTop = enemy.position.top >= player.position.top;
-      final inBottom = enemy.position.bottom <= player.position.bottom;
-      final inLeft = enemy.position.left >= player.position.left;
-      final inRigth = enemy.position.right <= player.position.right;
-      if (inTop && inBottom && inLeft && inRigth) {
-        points = points + 1;
-        enemy.inPlayer = true;
-        enemySpeed = enemySpeed + 10;
-      }
-    });
-
-    enemies.removeWhere((enemy) {
-      bool leaveScreen = enemy.position.top >= screenSize.height;
-      if (leaveScreen) {
-        lostGame = true;
-      }
-      return leaveScreen || enemy.inPlayer;
-    });
-  }
-
-  @override
-  void render(Canvas canvas) {
     if (lostGame) {
       enemyCreator.stop();
       enemies.removeWhere((enemy) => !enemy.inPlayer);
@@ -82,12 +57,37 @@ class FireBollGame extends Game with HasWidgetsOverlay {
       );
     } else {
       removeWidgetOverlay('lostGame');
-      player.render(canvas, playerColor);
-
+      enemyCreator.update(dt);
       enemies.forEach((enemy) {
-        enemy.render(canvas, enemyColor);
+        enemy.position = enemy.position.translate(0, (enemySpeed * dt));
+        final inTop = enemy.position.top >= player.position.top;
+        final inBottom = enemy.position.bottom <= player.position.bottom;
+        final inLeft = enemy.position.left >= player.position.left;
+        final inRigth = enemy.position.right <= player.position.right;
+        if (inTop && inBottom && inLeft && inRigth) {
+          points = points + 1;
+          enemy.inPlayer = true;
+          enemySpeed = enemySpeed + 10;
+        }
+      });
+
+      enemies.removeWhere((enemy) {
+        bool leaveScreen = enemy.position.top >= screenSize.height;
+        if (leaveScreen) {
+          lostGame = true;
+        }
+        return leaveScreen || enemy.inPlayer;
       });
     }
+  }
+
+  @override
+  void render(Canvas canvas) {
+    player.render(canvas, playerColor);
+
+    enemies.forEach((enemy) {
+      enemy.render(canvas, enemyColor);
+    });
     PointsRender().render(canvas, points, screenSize);
   }
 }
